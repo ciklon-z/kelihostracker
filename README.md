@@ -2,13 +2,11 @@
 
 The Kelihos botnet tracker
 
-Using
-#BootStrap
-#jQuery
-#PHP
-
-Engine
-#Python
+-Using-
+BootStrap
+jQuery
+PHP
+Python
 
 # License
 
