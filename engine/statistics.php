@@ -77,9 +77,10 @@ switch ($cmd) {
 		$reg = $dData[1];
 		$ns = $dData[2];
 		$date = $dData[3];
-		if($reg != null) {
+		//Allow domains without details to be echoed
+		//if($reg != null) {
 		$jSON[] = array($domain, $reg, $ns, $date);
-		}
+		//}
 		}
 		echo json_encode($jSON);
         break;
