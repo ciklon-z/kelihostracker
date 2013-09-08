@@ -4,6 +4,12 @@ import string
 import datetime
 from cymruwhois import Client
 from async_dns import AsyncResolver
+<<<<<<< HEAD
+=======
+with open('db\active.db') as f:
+    content = f.readlines()
+ar = AsyncResolver([content])
+>>>>>>> 0e94139c1735c5c773f96b1d0b6dc95821cce300
 while (True): 
 	with open('db/active.db') as f:
 		content = f.readlines()
