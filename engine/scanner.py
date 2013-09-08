@@ -1,24 +1,20 @@
 #This is the python backend that checks DNS of domains in Array
-#
-#ToDO: Read from active.db for domains
-#31-08-13
-
 import socket
+import string
 import datetime
 from cymruwhois import Client
 from async_dns import AsyncResolver
-#ar = AsyncResolver(["ATSYHIR.COM", "HOGIWTY.ORG", "HUVJEYJQ.NL", "LUGASU.ASIA", "YDAHFUFD.IN"])
-#ar = AsyncResolver(["OVTYQDEF.NL", "QAVUKZAK.NL", "JEGIJFYR.NL", "LIGLIBEM.NL", "GEHOPCAB.NL", "JAPBIXYB.NL"])
-#ar = AsyncResolver(["PYINKUIV.NL", "JUDNOPEM.NL"])
-#ar = AsyncResolver(["PYINKUIV.NL", "JUDNOPEM.NL"])
-ar = AsyncResolver(["TUBSIVPE.NL", "JUDNOPEM.NL", "GEWFYWAS.NL"])
 while (True): 
+	with open('db/active.db') as f:
+		content = f.readlines()
+	myList = [i.split('|')[0] for i in content] 
+	ar = AsyncResolver(myList)
 	resolved = ar.resolve()
 	for host, ip in resolved.items():	
 			if ip is None:
 				print "%s could not be resolved." % host
 			else: 
-				if ip not in open('db\full.db').read():
+				if ip not in open('db/full.db').read():
 					print "%s resolved to %s" % (host, ip)
 					c=Client()
  					try:
@@ -35,6 +31,6 @@ while (True):
 						r.asn = 'Not Found'
 						r.owner = 'Not Found'
 						r.cc = 'Not Found'
-					with open("db\full.db", "a") as myfile:
+					with open("db/full.db", "a") as myfile:
 						myfile.write(ip + '|' + str(dnsrev[0]) + '|' + r.asn + '|' + r.owner + '|' + r.cc + '|' + date + '\n')
 
