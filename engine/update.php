@@ -28,7 +28,7 @@ function CheckDomain($host) {
 try {
 	//Run query on host for NS type
 	$result = $rs->query($host, $type);
-} catch(InvalidArgumentException $e) {
+} catch(Net_DNS2_Exception  $e) {
         echo "Failed to query: " . $e->getMessage() . "\n";
 }
 	//Loop through NS detected on host
@@ -41,7 +41,7 @@ foreach($nsArray as $NS){
 if (strpos($NS,strtolower($host)) !== false) {
 	try {
 		$result = $rs->query("$NS", "A");
-	} catch(InvalidArgumentException $e) {
+	} catch(Net_DNS2_Exception  $e) {
 		echo "Failed to query: " . $e->getMessage() . "\n";
 	}
 	//Output NS A record data to $nsData
@@ -69,13 +69,22 @@ if (in_array("kelihos", $final_result)) {
     echo "Domain $host - Kelihos Detected\n";
 	$myFile = "active.db";
 	$fh = fopen($myFile, 'a') or die("can't open file");
-	fwrite($fh, "$host||\n");
+	fwrite($fh, "$host\n");
 	fclose($fh);
 } else {
     echo "Domain $host - Kelihos NOT Detected\n";
 }
 }
 
+
+
+$fileData = explode("\n",file_get_contents('active.db'));
+foreach ($fileData as $value)
+{
+	$dData = explode("|",$value);
+	$domain = $dData[0];
+	CheckDomain($domain,"first");
+} 
 
 //Load urlquery data checking for domains with ?id=kh sort into $host_list array 
 $doc = new DOMDocument();
@@ -86,14 +95,10 @@ foreach ($urls as $url) {
 	$data = parse_url($url->nodeValue);
 	$hosts[] = strtoupper($data[host]);
 }
-$host_list = array_unique(array_filter($hosts));
+	$host_list = array_unique(array_filter($hosts));
 foreach ($host_list as $host) {
-CheckDomain($host);
+	CheckDomain($host);
 }
 
-
-
-
 ?>
-
 

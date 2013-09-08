@@ -7,11 +7,9 @@ import socket
 import datetime
 from cymruwhois import Client
 from async_dns import AsyncResolver
-#ar = AsyncResolver(["ATSYHIR.COM", "HOGIWTY.ORG", "HUVJEYJQ.NL", "LUGASU.ASIA", "YDAHFUFD.IN"])
-#ar = AsyncResolver(["OVTYQDEF.NL", "QAVUKZAK.NL", "JEGIJFYR.NL", "LIGLIBEM.NL", "GEHOPCAB.NL", "JAPBIXYB.NL"])
-#ar = AsyncResolver(["PYINKUIV.NL", "JUDNOPEM.NL"])
-#ar = AsyncResolver(["PYINKUIV.NL", "JUDNOPEM.NL"])
-ar = AsyncResolver(["TUBSIVPE.NL", "JUDNOPEM.NL", "GEWFYWAS.NL"])
+with open('db\active.db') as f:
+    content = f.readlines()
+ar = AsyncResolver([content])
 while (True): 
 	resolved = ar.resolve()
 	for host, ip in resolved.items():	
